@@ -23,6 +23,7 @@ BATCH_SIZE  = 8        # Batch size
 EPOCHS      = 5        # Number of training epochs
 LR          = 0.5      # Learning rate
 OPTIMIZER   = "adam"    # Choose "adam" or "sgd"
+STUDENT_ID = 907394064
 
 # =======================================================
 SEED        = 42        # Random seed for reproducibility
@@ -63,11 +64,27 @@ def main():
 
     # —— Show 10 sample images (0-9) ——
     fig, axes = plt.subplots(2, 5, figsize=(8, 4))
-    for i in range(10):
-        image, label = train_set[i]
-        ax = axes[i//5, i%5]
-        ax.imshow(image.squeeze(), cmap="gray")
+    wanted = [int(d) for d in STUDENT_ID] + [0] # last digit forced to be 0
+
+    # building an index list 'picks' that grabs the matching label for each wanted digit in order
+    picks = []
+    seq = wanted.copy()
+    i = 0
+    while seq and i < len(train_set):
+        label = train_set[i][1]
+        if label == seq[0]:
+            picks.append(i)
+            seq.pop(0)
+        i += 1
+
+    # plot
+    for i, idx in enumerate(picks):
+        img, lab = train_set[idx]
+        ax = axes[i/5, i%5]
+        ax.imshow(img.squeeze(), cmap="gray")
+        ax.set_title(str(lab))
         ax.axis("off")
+        
     plt.tight_layout()
     plt.show()
 
