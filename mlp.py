@@ -15,15 +15,19 @@ import torch.nn as nn
 import torch.optim as optim
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
+
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+
 
 # ===== Hyperparameters =====
 LAYERS      = [8, 4]   # Hidden layer sizes.
 BATCH_SIZE  = 8        # Batch size
-EPOCHS      = 5        # Number of training epochs
+EPOCHS      = 15        # Number of training epochs
 LR          = 0.5      # Learning rate
 OPTIMIZER   = "adam"    # Choose "adam" or "sgd"
-STUDENT_ID = 907394064
+STUDENT_ID = "907394064"
 
 # =======================================================
 SEED        = 42        # Random seed for reproducibility
@@ -62,7 +66,7 @@ def main():
     train_loader = DataLoader(train_set, batch_size=BATCH_SIZE, shuffle=True)
     test_loader  = DataLoader(test_set,  batch_size=BATCH_SIZE, shuffle=False)
 
-    # —— Show 10 sample images (0-9) ——
+    # --- task 1 ---
     fig, axes = plt.subplots(2, 5, figsize=(8, 4))
     wanted = [int(d) for d in STUDENT_ID] + [0] # last digit forced to be 0
 
@@ -80,7 +84,7 @@ def main():
     # plot
     for i, idx in enumerate(picks):
         img, lab = train_set[idx]
-        ax = axes[i/5, i%5]
+        ax = axes[i//5, i%5]
         ax.imshow(img.squeeze(), cmap="gray")
         ax.set_title(str(lab))
         ax.axis("off")
