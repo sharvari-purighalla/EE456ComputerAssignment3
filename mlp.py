@@ -19,9 +19,9 @@ import matplotlib.pyplot as plt
 
 
 # ===== Hyperparameters =====
-LAYERS      = [8, 4]   # Hidden layer sizes.
+LAYERS      = [128, 64, 32]   # Hidden layer sizes.
 BATCH_SIZE  = 64       # Batch size
-EPOCHS      = 30       # Number of training epochs
+EPOCHS      = 15      # Number of training epochs
 LR          = 0.001      # Learning rate
 OPTIMIZER   = "adam"   # Choose "adam" or "sgd"
 STUDENT_ID = "907394064"
