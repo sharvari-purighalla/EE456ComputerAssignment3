@@ -15,10 +15,10 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 
 # Tunable parameters (kept the same as your settings)
-BATCH_SIZE = 5000
-EPOCHS     = 5000
-LR         = 5000
-OPTIMIZER  = ""
+BATCH_SIZE = 128
+EPOCHS     = 12
+LR         = 0.001
+OPTIMIZER  = "adam"
 DROPOUT_P  = 0.3
 SEED       = 42
 
@@ -33,11 +33,28 @@ class StudentCNN(nn.Module):
     def __init__(self):
         super().__init__()
         # Block 1: Conv(1->32, k=3,p=1) -> ReLU -> Conv(32->64, k=3,p=1) -> ReLU -> MaxPool(2)
+        self.block1 = nn.Sequential(
+            nn.Conv2d(1, 32, kernel_size=3, padding=1),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(32, 64, kernel_size=3, padding=1),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(2)
+        )
 
         # Block 2: Conv(64->128, k=3,p=1) -> ReLU -> MaxPool(2)
-
+        self.block2 = nn.Sequential(
+            nn.Conv2d(64, 128, kernel_size=3, padding=1),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(2)
+        )
         # Head: Flatten -> Linear(128*7*7, 256) -> ReLU -> Dropout -> Linear(256, 10)
-
+        self.classifier = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(128 * 7 * 7, 256),
+            nn.ReLU(inplace = True),
+            nn.Dropout(DROPOUT_P),
+            nn.Linear(256, 10)
+        )
 
     def forward(self, x):
         x = self.block1(x)
