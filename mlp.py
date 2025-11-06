@@ -15,18 +15,15 @@ import torch.nn as nn
 import torch.optim as optim
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
-
-import matplotlib
-matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 
 # ===== Hyperparameters =====
 LAYERS      = [8, 4]   # Hidden layer sizes.
-BATCH_SIZE  = 8        # Batch size
-EPOCHS      = 15        # Number of training epochs
-LR          = 0.5      # Learning rate
-OPTIMIZER   = "adam"    # Choose "adam" or "sgd"
+BATCH_SIZE  = 64       # Batch size
+EPOCHS      = 30       # Number of training epochs
+LR          = 0.001      # Learning rate
+OPTIMIZER   = "adam"   # Choose "adam" or "sgd"
 STUDENT_ID = "907394064"
 
 # =======================================================
@@ -90,7 +87,9 @@ def main():
         ax.axis("off")
         
     plt.tight_layout()
-    plt.show()
+    plt.show(block=False)
+    plt.pause(0.1)
+    plt.close()
 
     # —— Model and optimizer ——
     model = MLP().to(device)
